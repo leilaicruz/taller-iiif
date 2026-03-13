@@ -1,0 +1,53 @@
+{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "http://localhost/manifests/coleccion.json",
+  "type": "Collection",
+  "label": {
+    "es": ["Colección completa — Taller IIIF"]
+  },
+  "summary": {
+    "es": ["Una colección IIIF que agrupa varios manifiestos. Las colecciones permiten organizar manifiestos jerárquicamente."]
+  },
+  "requiredStatement": {
+    "label": { "es": ["Atribución"] },
+    "value": { "es": ["Taller IIIF — Material de demostración"] }
+  },
+  "items": [
+    {
+      "id": "http://localhost/manifests/libro.json",
+      "type": "Manifest",
+      "label": { "es": ["Libro de imágenes"] },
+      "thumbnail": [
+        {
+          "id": "http://localhost/iiif/3/1.jpg/full/200,/0/default.jpg",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/galeria.json",
+      "type": "Manifest",
+      "label": { "es": ["Galería de arte"] },
+      "thumbnail": [
+        {
+          "id": "http://localhost/iiif/3/6.jpg/full/200,/0/default.jpg",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/anotaciones.json",
+      "type": "Manifest",
+      "label": { "es": ["Imagen anotada"] },
+      "thumbnail": [
+        {
+          "id": "http://localhost/iiif/3/1.jpg/full/200,/0/default.jpg",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ]
+    }
+  ]
+}

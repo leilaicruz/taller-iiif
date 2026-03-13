@@ -1,0 +1,21 @@
+# Cache & runtime
+*.log
+*.pid
+cantaloupe-cache/
+
+# Docker volumes
+docker-volumes/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node (manifest-editor build artifacts already committed, but ignore dev stuff)
+node_modules/
+.turbo/

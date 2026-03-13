@@ -1,0 +1,18 @@
+services:
+  taller-iiif:
+    build:
+      context: .
+      dockerfile: Dockerfile.taller
+      args:
+        CANTALOUPE_VERSION: "5.0.6"
+    container_name: taller-iiif-completo
+    ports:
+      - "9090:80"
+    volumes:
+      - cantaloupe-cache:/var/cantaloupe/cache
+    restart: unless-stopped
+    environment:
+      - JAVA_OPTS=-Xmx2g
+
+volumes:
+  cantaloupe-cache:

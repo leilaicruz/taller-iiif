@@ -1,0 +1,213 @@
+{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "http://localhost/manifests/libro.json",
+  "type": "Manifest",
+  "label": {
+    "es": ["Libro de imágenes — Colección de ejemplo"]
+  },
+  "summary": {
+    "es": ["Un manifiesto IIIF de ejemplo que organiza varias imágenes como páginas de un libro. Cada canvas representa una página con su imagen asociada."]
+  },
+  "metadata": [
+    {
+      "label": { "es": ["Autor"] },
+      "value": { "es": ["Taller IIIF"] }
+    },
+    {
+      "label": { "es": ["Fecha"] },
+      "value": { "es": ["2026"] }
+    },
+    {
+      "label": { "es": ["Descripción"] },
+      "value": { "es": ["Manifiesto de demostración para el taller de IIIF con Cantaloupe y OpenSeadragon"] }
+    }
+  ],
+  "rights": "http://creativecommons.org/licenses/by/4.0/",
+  "requiredStatement": {
+    "label": { "es": ["Atribución"] },
+    "value": { "es": ["Taller IIIF — Material de demostración"] }
+  },
+  "thumbnail": [
+    {
+      "id": "http://localhost/iiif/3/1.jpg/full/200,/0/default.jpg",
+      "type": "Image",
+      "format": "image/jpeg",
+      "service": [
+        {
+          "id": "http://localhost/iiif/3/1.jpg",
+          "type": "ImageService3",
+          "profile": "level2"
+        }
+      ]
+    }
+  ],
+  "viewingDirection": "left-to-right",
+  "behavior": ["paged"],
+  "items": [
+    {
+      "id": "http://localhost/manifests/libro.json/canvas/p1",
+      "type": "Canvas",
+      "label": { "es": ["Página 1"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/libro.json/canvas/p1/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/libro.json/canvas/p1/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/1.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/1.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/libro.json/canvas/p1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/libro.json/canvas/p2",
+      "type": "Canvas",
+      "label": { "es": ["Página 2"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/libro.json/canvas/p2/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/libro.json/canvas/p2/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/2.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/2.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/libro.json/canvas/p2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/libro.json/canvas/p3",
+      "type": "Canvas",
+      "label": { "es": ["Página 3"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/libro.json/canvas/p3/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/libro.json/canvas/p3/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/3.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/3.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/libro.json/canvas/p3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/libro.json/canvas/p4",
+      "type": "Canvas",
+      "label": { "es": ["Página 4"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/libro.json/canvas/p4/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/libro.json/canvas/p4/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/4.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/4.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/libro.json/canvas/p4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/libro.json/canvas/p5",
+      "type": "Canvas",
+      "label": { "es": ["Página 5"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/libro.json/canvas/p5/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/libro.json/canvas/p5/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/5.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/5.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/libro.json/canvas/p5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

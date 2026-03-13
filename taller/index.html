@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller IIIF — Cantaloupe &amp; OpenSeadragon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ════════════════════ NAV ════════════════════ -->
+<nav>
+    <div class="nav-inner">
+        <span class="logo">📐 Taller IIIF</span>
+        <a class="nav-link active" href="#intro">Intro</a>
+        <a class="nav-link" href="#anatomia">URL</a>
+        <a class="nav-link" href="#builder">Constructor</a>
+        <a class="nav-link" href="#regiones">Regiones</a>
+        <a class="nav-link" href="#tamanos">Tamaños</a>
+        <a class="nav-link" href="#rotacion">Rotación</a>
+        <a class="nav-link" href="#calidad">Calidad</a>
+        <a class="nav-link" href="#info">info.json</a>
+        <a class="nav-link" href="#zoom">Zoom</a>
+        <a class="nav-link" href="#visor">Visor</a>
+        <a class="nav-link" href="#comparar">Comparar</a>
+        <a class="nav-link" href="#presentacion">Presentación</a>
+        <a class="nav-link" href="#manifiestos">Manifiestos</a>
+        <a class="nav-link" href="#crud">Editor</a>
+        <a class="nav-link" href="#mirador">Mirador</a>
+        <a class="nav-link" href="#anotaciones">Anotaciones</a>
+        <a class="nav-link" href="#interop">Interoperabilidad</a>
+        <a class="nav-link" href="#galeria">Galería</a>
+        <a class="nav-link" href="#busqueda">🔎 Búsqueda</a>
+        <a class="nav-link" href="#ohc">🇨🇺 OHC</a>
+    </div>
+</nav>
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<div class="hero" id="intro">
+    <h1>Taller IIIF Interactivo</h1>
+    <p>Explora las posibilidades del estándar IIIF (International Image Interoperability Framework) usando Cantaloupe como servidor de imágenes y OpenSeadragon como visor.</p>
+</div>
+
+<!-- ════════════════════ 1. QUÉ ES IIIF ════════════════════ -->
+<section>
+    <h2>¿Qué es IIIF? <span class="badge">Concepto</span></h2>
+    <p class="desc">IIIF es un conjunto de estándares abiertos para servir, compartir y anotar imágenes de alta resolución a través de la web.</p>
+
+    <div class="grid-3">
+        <div class="card">
+            <h3>🖼️ Image API</h3>
+            <p>Permite solicitar partes específicas de una imagen con parámetros en la URL: región, tamaño, rotación, calidad y formato.</p>
+        </div>
+        <div class="card">
+            <h3>📖 Presentation API</h3>
+            <p>Define cómo organizar imágenes en secuencias (manifiestos), como las páginas de un libro o las piezas de una colección.</p>
+        </div>
+        <div class="card">
+            <h3>🔍 Content Search API</h3>
+            <p>Permite buscar texto dentro de los recursos IIIF, como texto OCR en páginas de documentos digitalizados.</p>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+        <h3>🏗️ Nuestra infraestructura</h3>
+        <div class="grid-2">
+            <div>
+                <p><strong>Cantaloupe 5.0</strong> — Servidor IIIF de imágenes escrito en Java. Soporta IIIF Image API 2.1 y 3.0, múltiples formatos, cache, y procesamiento dinámico.</p>
+                <pre>{scheme}://{host}/iiif/3/{imagen}/{region}/{size}/{rotation}/{quality}.{format}</pre>
+            </div>
+            <div>
+                <p><strong>OpenSeadragon</strong> — Visor JavaScript de alta resolución. Permite zoom profundo, navegación fluida, y consume directamente endpoints IIIF.</p>
+                <pre>OpenSeadragon({
+  tileSources: "/iiif/3/1.jpg/info.json"
+});</pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 2. ANATOMÍA DE LA URL ════════════════════ -->
+<section id="anatomia">
+    <h2>Anatomía de una URL IIIF <span class="badge">Image API 3.0</span></h2>
+    <p class="desc">Cada parte de la URL controla un aspecto de la imagen que se devuelve. Pasa el cursor sobre cada parte.</p>
+
+    <div class="card">
+        <div class="url-anatomy">
+            <span class="url-part base">{server}/iiif/3</span>
+            <span class="url-part slash">/</span>
+            <span class="url-part identifier">1.jpg</span>
+            <span class="url-part slash">/</span>
+            <span class="url-part region">pct:25,25,50,50</span>
+            <span class="url-part slash">/</span>
+            <span class="url-part size">800,</span>
+            <span class="url-part slash">/</span>
+            <span class="url-part rotation">0</span>
+            <span class="url-part slash">/</span>
+            <span class="url-part quality">default</span>
+            <span class="url-part format">.jpg</span>
+        </div>
+
+        <div class="url-legend">
+            <span><span class="dot" style="background:#1e40af"></span> Base del servidor</span>
+            <span><span class="dot" style="background:#065f46"></span> Identificador</span>
+            <span><span class="dot" style="background:#92400e"></span> Región</span>
+            <span><span class="dot" style="background:#7c2d12"></span> Tamaño</span>
+            <span><span class="dot" style="background:#581c87"></span> Rotación</span>
+            <span><span class="dot" style="background:#831843"></span> Calidad</span>
+            <span><span class="dot" style="background:#374151"></span> Formato</span>
+        </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:20px;">
+        <div class="card">
+            <h3>Valores de Región</h3>
+            <pre>full            → Imagen completa
+square          → Recorte cuadrado centrado
+x,y,w,h         → Píxeles (ej: 100,100,500,300)
+pct:x,y,w,h     → Porcentaje (ej: pct:25,25,50,50)</pre>
+        </div>
+        <div class="card">
+            <h3>Valores de Tamaño</h3>
+            <pre>max             → Tamaño máximo disponible
+w,              → Ancho fijo, alto proporcional
+,h              → Alto fijo, ancho proporcional
+w,h             → Tamaño exacto (puede distorsionar)
+!w,h            → Encajar en caja (mantiene proporción)
+pct:n           → Porcentaje del original</pre>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 3. CONSTRUCTOR DE URL ════════════════════ -->
+<section id="builder">
+    <h2>Constructor interactivo <span class="badge">Experimenta</span></h2>
+    <p class="desc">Ajusta los parámetros y observa el resultado en tiempo real. Haz click en la URL para copiarla.</p>
+
+    <div class="card" id="builder-form">
+        <div class="builder-controls">
+            <div class="control-group">
+                <label>Imagen</label>
+                <select id="b-image">
+                    <option value="1.jpg">1.jpg</option>
+                    <option value="2.jpg">2.jpg</option>
+                    <option value="3.jpg">3.jpg</option>
+                    <option value="4.jpg">4.jpg</option>
+                    <option value="5.jpg">5.jpg</option>
+                    <option value="6.jpg">6.jpg</option>
+                    <option value="7.jpg">7.jpg</option>
+                    <option value="8.jpg">8.jpg</option>
+                    <option value="9.jpg">9.jpg</option>
+                    <option value="10.jpg">10.jpg</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Región</label>
+                <select id="b-region-type">
+                    <option value="full">full (completa)</option>
+                    <option value="square">square (cuadrado)</option>
+                    <option value="pct:25,25,50,50">pct:25,25,50,50 (centro)</option>
+                    <option value="pct:0,0,100,50">pct:0,0,100,50 (mitad sup.)</option>
+                    <option value="pct:0,50,100,50">pct:0,50,100,50 (mitad inf.)</option>
+                    <option value="custom">Personalizado...</option>
+                </select>
+                <input type="text" id="b-region-value" placeholder="x,y,w,h o pct:x,y,w,h" style="display:none; margin-top:6px;">
+            </div>
+            <div class="control-group">
+                <label>Tamaño</label>
+                <select id="b-size-type">
+                    <option value="max">max</option>
+                    <option value="600,">600, (ancho fijo)</option>
+                    <option value="300,">300, (ancho fijo)</option>
+                    <option value=",400">,400 (alto fijo)</option>
+                    <option value="!400,400">!400,400 (encajar)</option>
+                    <option value="pct:50">pct:50</option>
+                    <option value="pct:25">pct:25</option>
+                    <option value="custom">Personalizado...</option>
+                </select>
+                <input type="text" id="b-size-value" placeholder="w,h o pct:n" style="display:none; margin-top:6px;">
+            </div>
+            <div class="control-group">
+                <label>Rotación (0-360)</label>
+                <input type="range" id="b-rotation" min="0" max="360" step="1" value="0">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:2px;">
+                    <span>0°</span>
+                    <span id="b-rotation-val">0°</span>
+                    <span>360°</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Espejo</label>
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;text-transform:none;letter-spacing:0;font-weight:400;">
+                    <input type="checkbox" id="b-mirror"> Reflejar horizontalmente
+                </label>
+            </div>
+            <div class="control-group">
+                <label>Calidad</label>
+                <select id="b-quality">
+                    <option value="default">default</option>
+                    <option value="color">color</option>
+                    <option value="gray">gray (grises)</option>
+                    <option value="bitonal">bitonal (B/N)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Formato</label>
+                <select id="b-format">
+                    <option value="jpg">JPG</option>
+                    <option value="png">PNG</option>
+                    <option value="webp">WebP</option>
+                    <option value="gif">GIF</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="url-output" id="builder-url"></div>
+        <div class="preview-frame" id="builder-preview">
+            <span class="placeholder">Cargando vista previa...</span>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 4. REGIONES ════════════════════ -->
+<section id="regiones">
+    <h2>Regiones <span class="badge">Region</span></h2>
+    <p class="desc">Selecciona qué parte de la imagen quieres obtener. Click en cualquiera para copiar su URL.</p>
+
+    <div class="grid-4" id="region-examples">
+        <!-- Populated by JS -->
+    </div>
+</section>
+
+<!-- ════════════════════ 5. TAMAÑOS ════════════════════ -->
+<section id="tamanos">
+    <h2>Tamaños <span class="badge">Size</span></h2>
+    <p class="desc">Controla las dimensiones de la imagen de salida. IIIF permite especificar ancho, alto, porcentaje o encajar en una caja.</p>
+
+    <div class="grid-4" id="size-examples">
+        <!-- Populated by JS -->
+    </div>
+</section>
+
+<!-- ════════════════════ 6. ROTACIÓN ════════════════════ -->
+<section id="rotacion">
+    <h2>Rotación y espejo <span class="badge">Rotation</span></h2>
+    <p class="desc">Rota la imagen en cualquier ángulo (0-360°). Usa el prefijo ! para aplicar espejo horizontal antes de rotar.</p>
+
+    <div class="grid-4" id="rotation-examples">
+        <!-- Populated by JS -->
+    </div>
+</section>
+
+<!-- ════════════════════ 7. CALIDAD Y FORMATO ════════════════════ -->
+<section id="calidad">
+    <h2>Calidad y formato <span class="badge">Quality &amp; Format</span></h2>
+    <p class="desc">Transforma la imagen a diferentes calidades (color, grises, bitonal) y formatos (JPG, PNG, WebP).</p>
+
+    <div class="grid-4" id="quality-examples">
+        <!-- Populated by JS -->
+    </div>
+</section>
+
+<!-- ════════════════════ 8. INFO.JSON ════════════════════ -->
+<section id="info">
+    <h2>info.json <span class="badge">Metadatos</span></h2>
+    <p class="desc">Cada imagen IIIF expone un endpoint info.json con sus metadatos: dimensiones, formatos soportados, niveles de tile, etc. Es lo que usa OpenSeadragon para saber cómo pedir los tiles.</p>
+
+    <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <label style="font-size:13px;font-weight:600;">Imagen:</label>
+            <select id="info-image-select" style="padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);">
+                <option value="1.jpg">1.jpg</option>
+                <option value="2.jpg">2.jpg</option>
+                <option value="3.jpg">3.jpg</option>
+                <option value="5.jpg">5.jpg</option>
+                <option value="10.jpg">10.jpg</option>
+            </select>
+            <span style="font-size:12px;color:var(--text-muted);">URL: <code id="info-url-display">/iiif/3/1.jpg/info.json</code></span>
+        </div>
+        <div class="json-viewer" id="info-json-output">Cargando...</div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+        <h3>¿Qué contiene info.json?</h3>
+        <div class="grid-2" style="margin-top:12px;">
+            <div>
+                <pre>{
+  "@context": "http://iiif.io/api/image/3/context.json",
+  "id": "{server}/iiif/3/1.jpg",
+  "type": "ImageService3",
+  "protocol": "http://iiif.io/api/image",
+  "width": 4000,      ← Ancho en píxeles
+  "height": 3000,     ← Alto en píxeles
+  ...
+}</pre>
+            </div>
+            <div>
+                <p>Los campos clave son:</p>
+                <ul style="padding-left:20px;line-height:2;">
+                    <li><strong>width / height</strong> — Dimensiones reales</li>
+                    <li><strong>tiles</strong> — Configuración de tiling para zoom</li>
+                    <li><strong>sizes</strong> — Tamaños prefabricados disponibles</li>
+                    <li><strong>profile</strong> — Capacidades del servidor</li>
+                    <li><strong>extraFormats</strong> — Formatos adicionales soportados</li>
+                    <li><strong>extraQualities</strong> — Calidades disponibles</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 9. ZOOM ════════════════════ -->
+<section id="zoom">
+    <h2>Zoom progresivo <span class="badge">Deep Zoom</span></h2>
+    <p class="desc">IIIF permite hacer zoom progresivo pidiendo regiones cada vez más pequeñas a resolución completa. Así funciona el "deep zoom" que permite explorar imágenes gigantes.</p>
+
+    <div class="grid-4" id="zoom-levels">
+        <!-- Populated by JS -->
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+        <h3>¿Cómo funciona el tiling?</h3>
+        <p style="margin-top:8px;">Cuando una imagen es muy grande, el servidor la divide en <strong>tiles</strong> (baldosas) de ~256×256 o 512×512 píxeles. El visor (OpenSeadragon) solo pide los tiles que necesita para el nivel de zoom y la zona visible, haciendo que imágenes de cientos de megapíxeles sean navegables en el navegador.</p>
+        <pre style="margin-top:12px;">Nivel 0:  1 tile (thumbnail)
+Nivel 1:  4 tiles (2×2)
+Nivel 2:  16 tiles (4×4)
+Nivel 3:  64 tiles (8×8)
+...
+Nivel N:  resolución completa, solo carga los tiles visibles</pre>
+    </div>
+</section>
+
+<!-- ════════════════════ 10. VISOR OPENSEADRAGON ════════════════════ -->
+<section id="visor">
+    <h2>Visor OpenSeadragon <span class="badge">Interactivo</span></h2>
+    <p class="desc">Zoom profundo con rueda del ratón, arrastrar para mover, botones de rotación. OpenSeadragon pide automáticamente solo los tiles necesarios al servidor Cantaloupe.</p>
+
+    <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <label style="font-size:13px;font-weight:600;">Imagen:</label>
+            <select id="osd-image-select" style="padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);">
+                <option value="1.jpg">1.jpg</option>
+                <option value="2.jpg">2.jpg</option>
+                <option value="3.jpg">3.jpg</option>
+                <option value="4.jpg">4.jpg</option>
+                <option value="5.jpg">5.jpg</option>
+                <option value="6.jpg">6.jpg</option>
+                <option value="7.jpg">7.jpg</option>
+                <option value="8.jpg">8.jpg</option>
+                <option value="9.jpg">9.jpg</option>
+                <option value="10.jpg">10.jpg</option>
+            </select>
+            <span style="font-size:12px;color:var(--text-muted);">Rueda = zoom · Arrastrar = mover · Botones = rotar</span>
+        </div>
+        <div class="viewer-container" id="osd-viewer"></div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+        <h3>Código mínimo</h3>
+        <pre>&lt;div id="viewer" style="width:100%;height:500px"&gt;&lt;/div&gt;
+
+&lt;script src="https://cdn.jsdelivr.net/npm/openseadragon@4.1/build/openseadragon/openseadragon.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  OpenSeadragon({
+    id: 'viewer',
+    tileSources: '/iiif/3/1.jpg/info.json',
+    showNavigator: true,
+    showRotationControl: true,
+  });
+&lt;/script&gt;</pre>
+    </div>
+</section>
+
+<!-- ════════════════════ 11. COMPARAR ════════════════════ -->
+<section id="comparar">
+    <h2>Comparar imágenes <span class="badge">Side by Side</span></h2>
+    <p class="desc">Visualiza dos imágenes simultáneamente con zoom independiente. Útil para comparar diferentes versiones, restauraciones o detalles.</p>
+
+    <div class="card">
+        <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+            <div class="control-group">
+                <label>Imagen izquierda</label>
+                <select id="sbs-left-select" style="padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);">
+                    <option value="1.jpg">1.jpg</option>
+                    <option value="2.jpg">2.jpg</option>
+                    <option value="3.jpg">3.jpg</option>
+                    <option value="4.jpg">4.jpg</option>
+                    <option value="5.jpg">5.jpg</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Imagen derecha</label>
+                <select id="sbs-right-select" style="padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);">
+                    <option value="2.jpg" selected>2.jpg</option>
+                    <option value="1.jpg">1.jpg</option>
+                    <option value="3.jpg">3.jpg</option>
+                    <option value="4.jpg">4.jpg</option>
+                    <option value="5.jpg">5.jpg</option>
+                </select>
+            </div>
+        </div>
+        <div class="grid-2">
+            <div class="viewer-container-sm" id="osd-left"></div>
+            <div class="viewer-container-sm" id="osd-right"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 12. PRESENTATION API ════════════════════ -->
+<section id="presentacion">
+    <h2>Presentation API <span class="badge">IIIF Presentation 3.0</span></h2>
+    <p class="desc">La Image API sirve imágenes individuales. La Presentation API organiza esas imágenes en estructuras con significado: libros, manuscritos, exposiciones, colecciones.</p>
+
+    <div class="grid-2">
+        <div class="card">
+            <h3>🧩 Conceptos clave</h3>
+            <div style="line-height:2;">
+                <p><strong>Manifest</strong> — Describe un objeto digital completo (un libro, una obra). Contiene metadatos y una secuencia de Canvas.</p>
+                <p><strong>Canvas</strong> — Una superficie abstracta (como una página) donde se "pintan" contenidos mediante anotaciones.</p>
+                <p><strong>Annotation</strong> — Asocia contenido (imagen, texto, audio) a un Canvas o zona de un Canvas.</p>
+                <p><strong>Collection</strong> — Agrupa múltiples Manifests jerárquicamente.</p>
+                <p><strong>Range</strong> — Define una estructura lógica (capítulos, secciones) dentro de un Manifest.</p>
+            </div>
+        </div>
+        <div class="card">
+            <h3>📐 Anatomía de un Manifest</h3>
+            <pre style="font-size:12px;">{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "https://ejemplo.com/manifest.json",
+  "type": "Manifest",
+  "label": { "es": ["Mi libro"] },
+  "metadata": [...],        ← Metadatos descriptivos
+  "behavior": ["paged"],    ← Comportamiento del visor
+  "items": [                ← Array de Canvas
+    {
+      "type": "Canvas",
+      "label": { "es": ["Página 1"] },
+      "width": 1000, "height": 1500,
+      "items": [{            ← AnnotationPage
+        "items": [{          ← Annotation (painting)
+          "body": {          ← La imagen IIIF
+            "service": [{ "type": "ImageService3" }]
+          }
+        }]
+      }]
+    }
+  ]
+}</pre>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+        <h3>🔗 Image API + Presentation API</h3>
+        <div class="grid-3">
+            <div style="text-align:center;">
+                <div style="font-size:48px;margin-bottom:8px;">🖼️</div>
+                <p><strong>Image API</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">Sirve píxeles: regiones, zoom, formatos</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:48px;margin-bottom:8px;">➕</div>
+                <p><strong>Se combinan</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">El manifest referencia servicios de imagen IIIF</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:48px;margin-bottom:8px;">📖</div>
+                <p><strong>Presentation API</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">Organiza, describe y estructura los contenidos</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:24px;">
+        <div class="card">
+            <h3>📄 Behaviors</h3>
+            <pre>"paged"       → Libro (páginas enfrentadas)
+"continuous"   → Scroll continuo
+"individuals"  → Una imagen a la vez
+"multi-part"   → Colección de múltiples partes
+"auto-advance" → Avance automático (e.g. vídeo)</pre>
+        </div>
+        <div class="card">
+            <h3>🧭 Viewing Direction</h3>
+            <pre>"left-to-right"   → Lectura occidental (→)
+"right-to-left"   → Lectura árabe/hebrea (←)
+"top-to-bottom"   → Scroll vertical (↓)
+"bottom-to-top"   → Scroll inverso (↑)</pre>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 13. EXPLORADOR DE MANIFIESTOS ════════════════════ -->
+<section id="manifiestos">
+    <h2>Explorador de manifiestos <span class="badge">Interactivo</span></h2>
+    <p class="desc">Explora los manifiestos de ejemplo. Selecciona uno para ver su estructura JSON y la visualización de sus canvas.</p>
+
+    <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+            <label style="font-size:13px;font-weight:600;">Manifiesto:</label>
+            <select id="manifest-select" style="padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);">
+                <option value="/manifests/libro.json">📖 Libro de imágenes (paged)</option>
+                <option value="/manifests/galeria.json">🖼️ Galería de arte (continuous)</option>
+                <option value="/manifests/anotaciones.json">📝 Imagen anotada</option>
+                <option value="/manifests/coleccion.json">📚 Colección completa</option>
+            </select>
+            <button class="btn btn-outline" onclick="copyToClipboard(document.getElementById('manifest-select').value)">Copiar URL</button>
+        </div>
+
+        <div class="grid-2">
+            <div>
+                <h3 style="margin-bottom:8px;">Estructura</h3>
+                <div id="manifest-info" style="font-size:13px;">
+                    <p style="color:var(--text-muted)">Cargando manifiesto...</p>
+                </div>
+                <div id="manifest-canvases" style="margin-top:16px;"></div>
+            </div>
+            <div>
+                <h3 style="margin-bottom:8px;">JSON</h3>
+                <div class="json-viewer" id="manifest-json" style="max-height:500px;">Cargando...</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 13b. EDITOR DE MANIFIESTOS ════════════════════ -->
+<section id="crud">
+    <h2>Editor de Manifiestos IIIF <span class="badge">CRUD Interactivo</span></h2>
+    <p class="desc">Crea, edita y exporta manifiestos IIIF 3.0 usando el <strong>Digirati Manifest Editor</strong> (open source, integrado en este contenedor) o el editor visual rápido con plantillas precocinadas.</p>
+
+    <div class="grid-2" style="margin-bottom:24px;">
+        <div class="card">
+            <h3>🛠️ Digirati Manifest Editor</h3>
+            <p style="color:var(--text-muted);margin-bottom:12px;font-size:13px;">Editor completo integrado en este contenedor. Permite crear manifiestos desde cero, importar existentes, editar canvas, metadatos, anotaciones, rangos y colecciones.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+                <a href="/editor/" target="_blank" class="btn btn-primary" style="text-decoration:none;">Abrir Editor Completo ↗</a>
+                <button class="btn btn-outline" onclick="document.getElementById('editor-iframe-container').style.display='block'; document.getElementById('editor-iframe').src='/editor/';">Vista embebida</button>
+            </div>
+            <ul style="font-size:12px;color:var(--text-muted);padding-left:16px;line-height:1.8;">
+                <li>Interfaz visual completa — sin necesidad de editar JSON</li>
+                <li>Importar manifiestos por URL o archivo</li>
+                <li>Editor de canvas con drag &amp; drop</li>
+                <li>Creación de anotaciones y rangos (ToC)</li>
+                <li>Preview integrado con múltiples visores</li>
+                <li>Exportar como JSON válido IIIF 3.0</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>⚡ Editor Rápido con Plantillas</h3>
+            <p style="color:var(--text-muted);margin-bottom:12px;font-size:13px;">Usa plantillas precocinadas para crear manifiestos rápidamente con las imágenes del servidor. Ideal para aprender la estructura de un manifiesto.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+                <label style="font-size:12px;font-weight:600;">Plantilla:</label>
+                <select id="crud-template" style="flex:1;padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:12px;">
+                    <option value="blank">📄 Manifiesto vacío</option>
+                    <option value="book">📖 Libro (paged, 5 páginas)</option>
+                    <option value="gallery">🖼️ Galería (continuous)</option>
+                    <option value="annotated">📝 Con anotaciones</option>
+                    <option value="collection">📚 Colección</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="crud-create-btn" style="width:100%;">Crear desde plantilla</button>
+        </div>
+    </div>
+
+    <!-- Embedded editor iframe (hidden by default) -->
+    <div id="editor-iframe-container" style="display:none;margin-bottom:24px;">
+        <div class="card" style="padding:0;overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:var(--bg-code);border-bottom:1px solid var(--border);">
+                <span style="font-size:13px;font-weight:600;">Digirati Manifest Editor</span>
+                <div style="display:flex;gap:8px;">
+                    <a href="/editor/" target="_blank" class="btn btn-outline" style="font-size:11px;padding:4px 8px;text-decoration:none;">Abrir en nueva pestaña ↗</a>
+                    <button class="btn btn-outline" style="font-size:11px;padding:4px 8px;" onclick="document.getElementById('editor-iframe-container').style.display='none'; document.getElementById('editor-iframe').src='about:blank';">✕ Cerrar</button>
+                </div>
+            </div>
+            <iframe id="editor-iframe" src="about:blank" style="width:100%;height:700px;border:none;background:#fff;"></iframe>
+        </div>
+    </div>
+
+    <!-- CRUD - Saved manifests list -->
+    <div class="card" style="margin-bottom:24px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+            <h3>📋 Mis Manifiestos</h3>
+            <div style="display:flex;gap:8px;">
+                <button class="btn btn-outline" id="crud-import-btn" style="font-size:12px;">📥 Importar JSON</button>
+                <button class="btn btn-outline" id="crud-export-all-btn" style="font-size:12px;">📦 Exportar todos</button>
+                <input type="file" id="crud-import-file" accept=".json" style="display:none;">
+            </div>
+        </div>
+        <div id="crud-manifest-list">
+            <p style="color:var(--text-muted);font-size:13px;text-align:center;padding:24px;">No hay manifiestos guardados. Crea uno usando las plantillas o el editor.</p>
+        </div>
+    </div>
+
+    <!-- CRUD - JSON Editor -->
+    <div class="card" id="crud-editor-panel" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <h3 id="crud-editor-title">Editando manifiesto</h3>
+            <div style="display:flex;gap:8px;">
+                <button class="btn btn-primary" id="crud-save-btn">💾 Guardar</button>
+                <button class="btn btn-outline" id="crud-preview-btn">👁️ Preview en Mirador</button>
+                <button class="btn btn-outline" id="crud-download-btn">⬇️ Descargar JSON</button>
+                <button class="btn btn-outline" id="crud-validate-btn">✅ Validar</button>
+            </div>
+        </div>
+
+        <!-- Visual form fields -->
+        <div class="grid-2" style="margin-bottom:16px;">
+            <div>
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Título (label):</label>
+                <input type="text" id="crud-label" placeholder="Mi manifiesto" style="width:100%;padding:8px 12px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:13px;">
+            </div>
+            <div>
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Resumen (summary):</label>
+                <input type="text" id="crud-summary" placeholder="Descripción breve" style="width:100%;padding:8px 12px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:13px;">
+            </div>
+        </div>
+        <div class="grid-3" style="margin-bottom:16px;">
+            <div>
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Behavior:</label>
+                <select id="crud-behavior" style="width:100%;padding:8px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:12px;">
+                    <option value="paged">paged (Libro)</option>
+                    <option value="continuous">continuous (Scroll)</option>
+                    <option value="individuals">individuals (Individual)</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Dirección de lectura:</label>
+                <select id="crud-direction" style="width:100%;padding:8px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:12px;">
+                    <option value="left-to-right">left-to-right (→)</option>
+                    <option value="right-to-left">right-to-left (←)</option>
+                    <option value="top-to-bottom">top-to-bottom (↓)</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Licencia:</label>
+                <select id="crud-rights" style="width:100%;padding:8px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:12px;">
+                    <option value="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</option>
+                    <option value="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</option>
+                    <option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 (Dominio Público)</option>
+                    <option value="http://rightsstatements.org/vocab/InC/1.0/">In Copyright</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Canvas manager -->
+        <div style="margin-bottom:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <label style="font-size:12px;font-weight:600;">Canvas (páginas/imágenes):</label>
+                <button class="btn btn-outline" id="crud-add-canvas-btn" style="font-size:11px;padding:4px 8px;">+ Añadir canvas</button>
+            </div>
+            <div id="crud-canvas-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:8px;">
+                <!-- Populated by JS -->
+            </div>
+            <div id="crud-canvas-add-panel" style="display:none;margin-top:8px;padding:12px;background:var(--bg-code);border-radius:var(--radius);border:1px solid var(--border);">
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Imagen:</label>
+                <div style="display:flex;gap:8px;">
+                    <select id="crud-canvas-image" style="flex:1;padding:6px 10px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:12px;">
+                    </select>
+                    <input type="text" id="crud-canvas-label" placeholder="Nombre del canvas" style="flex:1;padding:6px 10px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:12px;">
+                    <button class="btn btn-primary" id="crud-canvas-confirm-btn" style="font-size:11px;padding:4px 12px;">Añadir</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs: Visual / JSON -->
+        <div class="tabs" style="margin-bottom:8px;">
+            <button class="tab active" data-group="crud-edit" data-tab="crud-json-tab">📝 JSON</button>
+            <button class="tab" data-group="crud-edit" data-tab="crud-preview-tab">👁️ Preview</button>
+        </div>
+        <div class="tab-content active" id="crud-json-tab" data-group="crud-edit">
+            <textarea id="crud-json-editor" spellcheck="false" style="width:100%;height:400px;background:var(--bg-code);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:12px;font-family:var(--font-mono);font-size:12px;line-height:1.5;resize:vertical;"></textarea>
+        </div>
+        <div class="tab-content" id="crud-preview-tab" data-group="crud-edit">
+            <div id="crud-mirador-preview" style="width:100%;height:500px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative;background:var(--bg-code);"></div>
+        </div>
+
+        <!-- Validation output -->
+        <div id="crud-validation" style="display:none;margin-top:12px;padding:12px;border-radius:var(--radius);font-size:12px;font-family:var(--font-mono);"></div>
+    </div>
+</section>
+
+<!-- ════════════════════ 14. MIRADOR ════════════════════ -->
+<section id="mirador">
+    <h2>Visor Mirador <span class="badge">Presentation API Viewer</span></h2>
+    <p class="desc">Mirador es el visor IIIF más completo. Lee manifiestos y permite navegar páginas, ver metadatos, comparar imágenes lado a lado, y gestionar anotaciones.</p>
+
+    <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+            <label style="font-size:13px;font-weight:600;">Cargar manifiesto:</label>
+            <select id="mirador-manifest-select" style="padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);">
+                <option value="/manifests/libro.json">📖 Libro de imágenes</option>
+                <option value="/manifests/galeria.json">🖼️ Galería de arte</option>
+                <option value="/manifests/anotaciones.json">📝 Imagen anotada</option>
+            </select>
+            <button class="btn btn-primary" id="mirador-load-btn">Cargar en Mirador</button>
+            <div class="control-group" style="flex:1;min-width:200px;">
+                <input type="text" id="mirador-custom-url" placeholder="O pega una URL de manifiesto externo..." style="width:100%;padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:12px;">
+            </div>
+            <button class="btn btn-outline" id="mirador-load-custom-btn">Cargar externo</button>
+        </div>
+        <div id="mirador-viewer" style="width:100%;height:600px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative;"></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:24px;">
+        <div class="card">
+            <h3>Funciones de Mirador</h3>
+            <ul style="padding-left:20px;line-height:2;">
+                <li><strong>Navegación de páginas</strong> — Thumbnails, índice, avance/retroceso</li>
+                <li><strong>Multi-ventana</strong> — Abre varios manifiestos a la vez</li>
+                <li><strong>Metadatos</strong> — Panel con información descriptiva del manifest</li>
+                <li><strong>Anotaciones</strong> — Visualiza y crea anotaciones sobre las imágenes</li>
+                <li><strong>Zoom profundo</strong> — Integración con IIIF Image API para deep zoom</li>
+                <li><strong>Comparación</strong> — Compara páginas o manifiestos lado a lado</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Código mínimo</h3>
+            <pre>&lt;div id="mirador"&gt;&lt;/div&gt;
+
+&lt;script src="https://unpkg.com/mirador@latest/dist/mirador.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  Mirador.viewer({
+    id: 'mirador',
+    windows: [{
+      manifestId: '/manifests/libro.json'
+    }]
+  });
+&lt;/script&gt;</pre>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 15. ANOTACIONES ════════════════════ -->
+<section id="anotaciones">
+    <h2>Anotaciones IIIF <span class="badge">Web Annotation</span></h2>
+    <p class="desc">Las anotaciones IIIF siguen el estándar W3C Web Annotation y permiten asociar contenido (texto, tags, enlaces) a zonas específicas de un canvas.</p>
+
+    <div class="grid-2">
+        <div class="card">
+            <h3>Tipos de motivación</h3>
+            <div style="line-height:2;">
+                <p><code style="color:var(--accent)">painting</code> — Contenido principal del canvas (la imagen)</p>
+                <p><code style="color:var(--accent)">commenting</code> — Comentarios sobre una zona</p>
+                <p><code style="color:var(--accent)">tagging</code> — Etiquetas o categorías</p>
+                <p><code style="color:var(--accent)">describing</code> — Descripción detallada</p>
+                <p><code style="color:var(--accent)">linking</code> — Enlaces a recursos relacionados</p>
+                <p><code style="color:var(--accent)">supplementing</code> — Contenido complementario (OCR, transcripción)</p>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Target con fragmento</h3>
+            <pre style="font-size:12px;">// Zona rectangular: x, y, ancho, alto
+"target": "...canvas/1#xywh=100,200,500,300"
+
+// Toda la superficie del canvas
+"target": "...canvas/1"
+
+// Porcentaje del canvas
+"target": "...canvas/1#xywh=pct:10,10,80,80"</pre>
+            <p style="margin-top:12px;font-size:13px;color:var(--text-muted);">El fragmento <code>#xywh=</code> usa el estándar W3C Media Fragments para señalar regiones rectangulares.</p>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+        <h3>Ejemplo de anotación completa</h3>
+        <pre style="font-size:12px;">{
+  "id": "https://ejemplo.com/anno/1",
+  "type": "Annotation",
+  "motivation": "commenting",
+  "body": {
+    "type": "TextualBody",
+    "value": "Este detalle muestra la técnica del claroscuro.",
+    "format": "text/plain",
+    "language": "es"
+  },
+  "target": "https://ejemplo.com/canvas/1#xywh=250,100,400,300"
+  ↑ Señala una zona rectangular de 400×300 px
+    empezando en (250, 100) del canvas
+}</pre>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+        <h3>Demo: Anotaciones en Mirador</h3>
+        <p style="margin-bottom:12px;color:var(--text-muted);">El manifiesto de "Imagen anotada" incluye anotaciones de comentario y etiquetado. Cárgalo en Mirador para verlas (activa el panel de anotaciones con el icono de bocadillo).</p>
+        <button class="btn btn-primary" onclick="loadManifestInMirador('/manifests/anotaciones.json'); document.getElementById('mirador').scrollIntoView({behavior:'smooth'});">Ver anotaciones en Mirador ↑</button>
+    </div>
+</section>
+
+<!-- ════════════════════ 16. INTEROPERABILIDAD ════════════════════ -->
+<section id="interop">
+    <h2>Interoperabilidad en acción <span class="badge">El poder de IIIF</span></h2>
+    <p class="desc">La verdadera potencia de IIIF es que cualquier visor puede abrir manifiestos de cualquier institución del mundo. Aquí puedes explorar colecciones reales de museos, bibliotecas y archivos internacionales, todo desde el mismo visor.</p>
+
+    <div class="card" style="margin-bottom:24px;">
+        <h3>🌍 ¿Por qué importa la interoperabilidad?</h3>
+        <div class="grid-3" style="margin-top:16px;">
+            <div style="text-align:center;">
+                <div style="font-size:40px;margin-bottom:8px;">🏛️</div>
+                <p><strong>Un estándar, muchas instituciones</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">El Museo del Prado, la British Library y la Biblioteca Nacional de Francia usan el mismo formato.</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:40px;margin-bottom:8px;">🔀</div>
+                <p><strong>Mezcla y compara</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">Abre un manuscrito de Oxford junto a uno de Harvard en la misma ventana. Compara versiones de diferentes archivos.</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:40px;margin-bottom:8px;">🔓</div>
+                <p><strong>Sin silos</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">No estás atado a un visor propietario. Cualquier visor compatible IIIF puede mostrar cualquier manifiesto.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>🎨 Colecciones internacionales</h3>
+        <p style="color:var(--text-muted);margin-bottom:16px;">Selecciona una obra y cárgala en Mirador. Estas son URLs reales de instituciones que publican sus colecciones con IIIF.</p>
+
+        <div id="external-collections" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px;">
+            <!-- Populated by JS -->
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="btn btn-primary" id="interop-load-btn">Cargar seleccionado en Mirador</button>
+            <button class="btn btn-outline" id="interop-load-multi-btn">Abrir varios lado a lado</button>
+            <span id="interop-selected-count" style="color:var(--text-muted);font-size:12px;">0 seleccionados</span>
+        </div>
+
+        <div id="interop-mirador" style="width:100%;height:650px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative;"></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:24px;">
+        <div class="card">
+            <h3>📋 ¿Dónde encontrar manifiestos IIIF?</h3>
+            <ul style="padding-left:20px;line-height:2.2;">
+                <li><a href="https://iiif.io/guides/finding_resources/" target="_blank">IIIF Resource Finder</a> — Directorio oficial</li>
+                <li><a href="https://digitizedmedievalmanuscripts.org/" target="_blank">Digitized Medieval Manuscripts</a> — Manuscritos medievales</li>
+                <li><a href="https://www.europeana.eu" target="_blank">Europeana</a> — Patrimonio cultural europeo</li>
+                <li><a href="https://gallica.bnf.fr" target="_blank">Gallica (BnF)</a> — Biblioteca Nacional de Francia</li>
+                <li><a href="https://www.loc.gov" target="_blank">Library of Congress</a> — Biblioteca del Congreso (EEUU)</li>
+                <li><a href="https://wellcomecollection.org" target="_blank">Wellcome Collection</a> — Ciencia y medicina</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>🧪 Experimenta: pega tu propio manifiesto</h3>
+            <p style="color:var(--text-muted);margin-bottom:12px;font-size:13px;">Busca un manifiesto IIIF en cualquier repositorio y pégalo aquí para verlo al instante.</p>
+            <div style="display:flex;gap:8px;">
+                <input type="text" id="interop-custom-url" placeholder="https://ejemplo.com/iiif/manifest.json" style="flex:1;padding:8px 12px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:12px;">
+                <button class="btn btn-primary" id="interop-custom-btn">Cargar</button>
+            </div>
+            <div style="margin-top:12px;">
+                <p style="font-size:12px;color:var(--text-muted);">💡 Truco: En muchas webs de museos, busca <code>/manifest</code> o <code>/info.json</code> en la URL, o busca el logo IIIF <img src="https://iiif.io/assets/images/logos/logo-sm.png" style="height:16px;vertical-align:middle;" alt="IIIF logo"> en la página.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 17. GALERÍA ════════════════════ -->
+<section id="galeria">
+    <h2>Galería de imágenes <span class="badge">Colección</span></h2>
+    <p class="desc">Todas las imágenes disponibles en el servidor. Click en una para ver su info.json.</p>
+
+    <div class="grid-4" id="gallery-grid" style="grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));">
+        <!-- Populated by JS -->
+    </div>
+</section>
+
+<!-- ════════════════════ 18. CONTENT SEARCH API ════════════════════ -->
+<section id="busqueda">
+    <h2>🔎 IIIF Content Search API <span class="badge">Búsqueda dentro de documentos</span></h2>
+    <p class="desc">La <strong>Content Search API</strong> permite buscar texto dentro de documentos IIIF que tienen OCR (reconocimiento óptico de caracteres). Los resultados devuelven las coordenadas exactas donde aparece cada término en cada página.</p>
+
+    <!-- Explicación -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>📖 ¿Cómo funciona?</h3>
+        <div class="grid-3">
+            <div style="text-align:center;">
+                <div style="font-size:40px;margin-bottom:8px;">📄</div>
+                <p><strong>1. Manifiesto con OCR</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">El manifiesto IIIF declara un <code>service</code> de tipo <code>SearchService1</code> que apunta al endpoint de búsqueda.</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:40px;margin-bottom:8px;">🔍</div>
+                <p><strong>2. Consulta HTTP</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">Se envía una petición GET con <code>?q=término</code> al endpoint. El servidor busca en todo el texto OCR del documento.</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:40px;margin-bottom:8px;">📍</div>
+                <p><strong>3. Coordenadas xywh</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">Cada resultado incluye el canvas, la posición <code>#xywh=x,y,w,h</code> y el texto encontrado con contexto.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estructura del servicio -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>🏗️ Estructura del servicio en el manifiesto</h3>
+        <p style="color:var(--text-muted);margin-bottom:12px;font-size:13px;">Así se declara un servicio de búsqueda dentro de un manifiesto IIIF (Presentation API 2.1):</p>
+        <div class="json-viewer" style="max-height:250px;">{
+  "@context": "http://iiif.io/api/search/0/context.json",
+  "@id": "https://example.org/search/v0/{manifest-id}",
+  "profile": "http://iiif.io/api/search/0/search",
+  "label": "Search within this manifest",
+  "service": {
+    "@id": "https://example.org/search/autocomplete/v0/{manifest-id}",
+    "profile": "http://iiif.io/api/search/0/autocomplete",
+    "label": "Autocomplete"
+  }
+}</div>
+    </div>
+
+    <!-- Buscador interactivo -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>🔎 Buscador interactivo</h3>
+        <p style="color:var(--text-muted);margin-bottom:16px;font-size:13px;">Busca texto dentro de libros digitalizados de la <a href="https://wellcomecollection.org/" target="_blank">Wellcome Collection</a>. Estos documentos tienen OCR completo e implementan la Content Search API.</p>
+
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+            <select id="search-manifest-select" style="flex:1;min-width:200px;padding:8px 12px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:12px;">
+                <option value="b28136615" data-title="Gray's School and Field Book of Botany">📗 Gray's Botany (b28136615)</option>
+                <option value="b20442233" data-title="Sexual Anomalies and Perversions">📕 Medical Text (b20442233)</option>
+            </select>
+            <input type="text" id="search-query-input" placeholder="Buscar texto (ej: plant, flower, leaf...)" value="plant" style="flex:2;min-width:200px;padding:8px 12px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:13px;">
+            <button class="btn btn-primary" id="search-execute-btn">🔎 Buscar</button>
+        </div>
+
+        <!-- Status -->
+        <div id="search-status" style="margin-bottom:12px;font-size:13px;color:var(--text-muted);">Escribe un término y pulsa buscar.</div>
+
+        <!-- URL de la petición -->
+        <div id="search-request-url" style="display:none;margin-bottom:16px;">
+            <label style="font-size:11px;font-weight:600;display:block;margin-bottom:4px;">URL de la petición:</label>
+            <div class="url-output" style="font-size:11px;cursor:pointer;" onclick="copyToClipboard(this.textContent)"></div>
+        </div>
+
+        <!-- Results -->
+        <div id="search-results" style="display:none;">
+            <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+                <div class="card" style="flex:1;min-width:150px;text-align:center;padding:12px;">
+                    <div id="search-total" style="font-size:28px;font-weight:700;color:var(--accent);">0</div>
+                    <div style="font-size:11px;color:var(--text-muted);">Resultados totales</div>
+                </div>
+                <div class="card" style="flex:1;min-width:150px;text-align:center;padding:12px;">
+                    <div id="search-hits-count" style="font-size:28px;font-weight:700;color:var(--success);">0</div>
+                    <div style="font-size:11px;color:var(--text-muted);">Hits devueltos</div>
+                </div>
+                <div class="card" style="flex:1;min-width:150px;text-align:center;padding:12px;">
+                    <div id="search-canvases-count" style="font-size:28px;font-weight:700;color:var(--warning);">0</div>
+                    <div style="font-size:11px;color:var(--text-muted);">Páginas con resultados</div>
+                </div>
+            </div>
+
+            <!-- Hits list -->
+            <div style="margin-bottom:16px;">
+                <h4 style="margin-bottom:8px;">📋 Resultados (hits)</h4>
+                <div id="search-hits-list" style="max-height:400px;overflow-y:auto;"></div>
+            </div>
+
+            <!-- Canvas viewer -->
+            <div id="search-canvas-viewer-container" style="display:none;">
+                <h4 style="margin-bottom:8px;">🖼️ Vista de la página con resultado resaltado</h4>
+                <div id="search-canvas-info" style="font-size:12px;color:var(--text-muted);margin-bottom:8px;"></div>
+                <div id="search-osd-viewer" style="width:100%;height:500px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-code);position:relative;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Respuesta JSON -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>📦 Respuesta JSON completa</h3>
+        <p style="color:var(--text-muted);margin-bottom:8px;font-size:13px;">La respuesta cruda de la Content Search API (AnnotationList):</p>
+        <div class="json-viewer" id="search-json-output" style="max-height:400px;">Ejecuta una búsqueda para ver la respuesta...</div>
+    </div>
+
+    <!-- Estructura de la respuesta -->
+    <div class="grid-2" style="margin-top:24px;">
+        <div class="card">
+            <h3>📐 Estructura de la respuesta</h3>
+            <ul style="font-size:12px;color:var(--text-muted);padding-left:16px;line-height:2;">
+                <li><code>@type</code>: <strong>sc:AnnotationList</strong></li>
+                <li><code>within.total</code>: número total de resultados</li>
+                <li><code>resources[]</code>: array de anotaciones</li>
+                <li><code>resources[].resource.chars</code>: texto encontrado</li>
+                <li><code>resources[].on</code>: canvas + <code>#xywh=x,y,w,h</code></li>
+                <li><code>hits[]</code>: agrupación por contexto</li>
+                <li><code>hits[].match</code>: texto exacto del match</li>
+                <li><code>hits[].before / .after</code>: texto de contexto</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>💡 Casos de uso</h3>
+            <ul style="font-size:12px;color:var(--text-muted);padding-left:16px;line-height:2;">
+                <li>📚 Búsqueda full-text en libros digitalizados</li>
+                <li>📰 Búsqueda en periódicos históricos</li>
+                <li>📜 Localizar nombres en manuscritos transcritos</li>
+                <li>🔬 Buscar términos científicos en publicaciones</li>
+                <li>🏛️ Buscar referencias en archivos históricos</li>
+                <li>✏️ Resaltar resultados sobre la imagen original</li>
+                <li>🔗 Deep-linking a posiciones exactas en un canvas</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ 19. CASO PRÁCTICO: OHC ════════════════════ -->
+<section id="ohc">
+    <h2>🇨🇺 Caso práctico: Oficina del Historiador de La Habana <span class="badge">Repositorio real</span></h2>
+    <p class="desc">Aplica todo lo aprendido en el taller con imágenes reales del <a href="http://coleccionesdigitales.ohc.cu/" target="_blank">Repositorio Digital de la Oficina del Historiador de la Ciudad de La Habana</a>. Este repositorio usa <strong>Cantaloupe + Omeka S</strong> para servir colecciones patrimoniales cubanas vía IIIF.</p>
+
+    <!-- About -->
+    <div class="card" style="margin-bottom:24px;">
+        <div class="grid-3">
+            <div style="text-align:center;">
+                <div style="font-size:40px;margin-bottom:8px;">🏛️</div>
+                <p><strong>Patrimonio de La Habana</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">Naipes, joyas, relojes, postales, fotografías y revistas históricas digitalizadas.</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:40px;margin-bottom:8px;">🔧</div>
+                <p><strong>Cantaloupe 5.0.5</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">Servidor IIIF en <code>iiif.ohc.cu</code> con Image API 2 y 3 habilitadas.</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:40px;margin-bottom:8px;">📚</div>
+                <p><strong>Omeka S</strong></p>
+                <p style="color:var(--text-muted);font-size:13px;">Gestión de colecciones con metadatos Dublin Core en <code>repositoriodigital.ohc.cu</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Galería OHC -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>🖼️ Galería de colecciones OHC</h3>
+        <p style="color:var(--text-muted);margin-bottom:16px;font-size:13px;">Imágenes de 6 colecciones reales. Click en una para explorarla.</p>
+
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="btn btn-primary ohc-filter active" data-filter="all">Todas</button>
+            <button class="btn btn-outline ohc-filter" data-filter="Naipes">🃏 Naipes</button>
+            <button class="btn btn-outline ohc-filter" data-filter="Fotos Leal">📷 Fotos Leal</button>
+            <button class="btn btn-outline ohc-filter" data-filter="Revista Social">📰 Revista Social</button>
+            <button class="btn btn-outline ohc-filter" data-filter="Relojes">⏰ Relojes</button>
+            <button class="btn btn-outline ohc-filter" data-filter="Joyas">💎 Joyas</button>
+            <button class="btn btn-outline ohc-filter" data-filter="Postales">📮 Postales</button>
+        </div>
+
+        <div id="ohc-gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <!-- URL Builder OHC -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>🔗 Constructor de URLs IIIF — OHC</h3>
+        <p style="color:var(--text-muted);margin-bottom:16px;font-size:13px;">Construye URLs IIIF usando imágenes reales del repositorio de la OHC.</p>
+
+        <div class="grid-2" style="gap:16px;">
+            <div>
+                <div style="margin-bottom:12px;">
+                    <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Imagen OHC:</label>
+                    <select id="ohc-image-select" style="width:100%;padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:12px;">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div class="grid-2" style="gap:8px;margin-bottom:8px;">
+                    <div>
+                        <label style="font-size:11px;font-weight:600;">Región:</label>
+                        <select id="ohc-region" style="width:100%;padding:4px 6px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:11px;">
+                            <option value="full">full</option>
+                            <option value="square">square</option>
+                            <option value="pct:10,10,80,80">pct:10,10,80,80</option>
+                            <option value="pct:25,25,50,50">pct:25,25,50,50</option>
+                            <option value="pct:0,0,50,50">pct:0,0,50,50 (esquina)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:11px;font-weight:600;">Tamaño:</label>
+                        <select id="ohc-size" style="width:100%;padding:4px 6px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:11px;">
+                            <option value="max">max</option>
+                            <option value="400,">400px ancho</option>
+                            <option value="200,">200px ancho</option>
+                            <option value=",300">,300 (alto)</option>
+                            <option value="pct:50">pct:50</option>
+                            <option value="pct:25">pct:25</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid-3" style="gap:8px;margin-bottom:8px;">
+                    <div>
+                        <label style="font-size:11px;font-weight:600;">Rotación:</label>
+                        <select id="ohc-rotation" style="width:100%;padding:4px 6px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:11px;">
+                            <option value="0">0°</option>
+                            <option value="90">90°</option>
+                            <option value="180">180°</option>
+                            <option value="270">270°</option>
+                            <option value="!0">!0 (espejo)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:11px;font-weight:600;">Calidad:</label>
+                        <select id="ohc-quality" style="width:100%;padding:4px 6px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:11px;">
+                            <option value="default">default</option>
+                            <option value="color">color</option>
+                            <option value="gray">gray</option>
+                            <option value="bitonal">bitonal</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:11px;font-weight:600;">Formato:</label>
+                        <select id="ohc-format" style="width:100%;padding:4px 6px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:11px;">
+                            <option value="jpg">jpg</option>
+                            <option value="png">png</option>
+                            <option value="gif">gif</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="url-output" id="ohc-url-output" style="font-size:11px;cursor:pointer;" onclick="copyToClipboard(document.getElementById('ohc-url-output').textContent)">
+                </div>
+            </div>
+            <div>
+                <div id="ohc-preview" style="min-height:250px;background:var(--bg-code);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                    <span class="placeholder">Selecciona una imagen</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visor Deep Zoom OHC -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>🔍 Visor Deep Zoom — OHC</h3>
+        <p style="color:var(--text-muted);margin-bottom:12px;font-size:13px;">Explora las imágenes de la OHC en alta resolución con zoom profundo. El visor se conecta directamente al servidor <code>iiif.ohc.cu</code>.</p>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+            <select id="ohc-viewer-select" style="flex:1;padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:12px;">
+                <!-- Populated by JS -->
+            </select>
+            <button class="btn btn-primary" id="ohc-viewer-load-btn">Cargar en visor</button>
+        </div>
+        <div id="ohc-osd-viewer" style="width:100%;height:500px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-code);"></div>
+    </div>
+
+    <!-- Comparar OHC -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>⚖️ Comparar imágenes OHC lado a lado</h3>
+        <p style="color:var(--text-muted);margin-bottom:12px;font-size:13px;">Selecciona dos imágenes de la OHC para verlas sincronizadas.</p>
+        <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:200px;">
+                <label style="font-size:11px;font-weight:600;">Izquierda:</label>
+                <select id="ohc-compare-left" style="width:100%;padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:11px;">
+                </select>
+            </div>
+            <div style="flex:1;min-width:200px;">
+                <label style="font-size:11px;font-weight:600;">Derecha:</label>
+                <select id="ohc-compare-right" style="width:100%;padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:11px;">
+                </select>
+            </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div id="ohc-compare-viewer-left" style="height:400px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-code);"></div>
+            <div id="ohc-compare-viewer-right" style="height:400px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-code);"></div>
+        </div>
+    </div>
+
+    <!-- info.json OHC -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>📋 info.json remoto — OHC</h3>
+        <p style="color:var(--text-muted);margin-bottom:12px;font-size:13px;">Inspecciona el info.json de las imágenes del servidor remoto. Observa las capacidades, tamaños y tiles que ofrece.</p>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+            <select id="ohc-info-select" style="flex:1;padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:12px;">
+            </select>
+            <span id="ohc-info-url" style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);"></span>
+        </div>
+        <div class="json-viewer" id="ohc-info-output" style="max-height:400px;">Selecciona una imagen...</div>
+    </div>
+
+    <!-- Metadata from Omeka S -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3>🏷️ Metadatos del repositorio (Omeka S API)</h3>
+        <p style="color:var(--text-muted);margin-bottom:12px;font-size:13px;">Consulta los metadatos Dublin Core del item directamente desde la API de Omeka S. Esto demuestra cómo los repositorios combinan IIIF con metadatos descriptivos.</p>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+            <select id="ohc-meta-select" style="flex:1;padding:6px 10px;background:var(--bg-code);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-family:var(--font-mono);font-size:12px;">
+            </select>
+            <button class="btn btn-outline" id="ohc-meta-load-btn">Consultar API</button>
+        </div>
+        <div id="ohc-metadata-output" style="font-size:13px;">
+            <p style="color:var(--text-muted);text-align:center;padding:24px;">Selecciona un item y consulta la API.</p>
+        </div>
+    </div>
+
+    <!-- Tips técnicos -->
+    <div class="grid-2" style="margin-top:24px;">
+        <div class="card">
+            <h3>💡 Cómo replicar este repositorio</h3>
+            <ul style="font-size:12px;color:var(--text-muted);padding-left:16px;line-height:2;">
+                <li>Instalar <strong>Cantaloupe</strong> como servidor IIIF</li>
+                <li>Instalar <strong>Omeka S</strong> para gestionar colecciones</li>
+                <li>Configurar el módulo <code>IIIF Server</code> en Omeka S</li>
+                <li>Apuntar Omeka S al endpoint <code>/iiif/3/</code> de Cantaloupe</li>
+                <li>Ingestar imágenes vía el media ingester IIIF</li>
+                <li>Organizar en Item Sets (colecciones)</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>🔗 Endpoints del repositorio OHC</h3>
+            <div style="font-size:12px;font-family:var(--font-mono);line-height:2.2;">
+                <p><span style="color:var(--accent);">IIIF Image API 3:</span> <a href="https://iiif.ohc.cu/iiif/3/" target="_blank">iiif.ohc.cu/iiif/3/</a></p>
+                <p><span style="color:var(--accent);">IIIF Image API 2:</span> <a href="https://iiif.ohc.cu/iiif/2/" target="_blank">iiif.ohc.cu/iiif/2/</a></p>
+                <p><span style="color:var(--accent);">Omeka S API:</span> <a href="https://repositoriodigital.ohc.cu/api/" target="_blank">repositoriodigital.ohc.cu/api/</a></p>
+                <p><span style="color:var(--accent);">Colecciones:</span> <a href="http://coleccionesdigitales.ohc.cu/" target="_blank">coleccionesdigitales.ohc.cu</a></p>
+                <p><span style="color:var(--accent);">Ejemplo info.json:</span></p>
+                <code style="font-size:10px;word-break:break-all;">https://iiif.ohc.cu/iiif/3/ohcnp_np_000002510.jpg/info.json</code>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer>
+    <p>Taller IIIF · Cantaloupe 5.0 + OpenSeadragon · <a href="https://iiif.io" target="_blank">iiif.io</a> · <a href="https://cantaloupe-project.github.io" target="_blank">Cantaloupe</a> · <a href="https://openseadragon.github.io" target="_blank">OpenSeadragon</a></p>
+</footer>
+
+<!-- ── Scripts ── -->
+<script src="https://cdn.jsdelivr.net/npm/openseadragon@4.1/build/openseadragon/openseadragon.min.js"></script>
+<script src="https://unpkg.com/mirador@latest/dist/mirador.min.js"></script>
+<script src="js/app.js"></script>
+
+<!-- Rotation slider label -->
+<script>
+    const rotSlider = document.getElementById('b-rotation');
+    const rotVal = document.getElementById('b-rotation-val');
+    if (rotSlider && rotVal) {
+        rotSlider.addEventListener('input', () => { rotVal.textContent = rotSlider.value + '°'; });
+    }
+
+    // Update info URL display
+    const infoSel = document.getElementById('info-image-select');
+    const infoUrl = document.getElementById('info-url-display');
+    if (infoSel && infoUrl) {
+        infoSel.addEventListener('change', () => {
+            infoUrl.textContent = `/iiif/3/${infoSel.value}/info.json`;
+        });
+    }
+</script>
+
+</body>
+</html>

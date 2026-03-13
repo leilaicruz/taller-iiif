@@ -1,0 +1,202 @@
+{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "http://localhost/manifests/galeria.json",
+  "type": "Manifest",
+  "label": {
+    "es": ["Galería de arte — Exposición virtual"]
+  },
+  "summary": {
+    "es": ["Una colección de imágenes presentadas como exposición virtual. Cada canvas es una obra independiente con navegación continua."]
+  },
+  "metadata": [
+    {
+      "label": { "es": ["Tipo"] },
+      "value": { "es": ["Exposición virtual"] }
+    },
+    {
+      "label": { "es": ["Formato"] },
+      "value": { "es": ["Navegación continua (scroll)"] }
+    }
+  ],
+  "rights": "http://creativecommons.org/licenses/by/4.0/",
+  "requiredStatement": {
+    "label": { "es": ["Atribución"] },
+    "value": { "es": ["Taller IIIF — Material de demostración"] }
+  },
+  "thumbnail": [
+    {
+      "id": "http://localhost/iiif/3/6.jpg/full/200,/0/default.jpg",
+      "type": "Image",
+      "format": "image/jpeg"
+    }
+  ],
+  "behavior": ["continuous"],
+  "viewingDirection": "top-to-bottom",
+  "items": [
+    {
+      "id": "http://localhost/manifests/galeria.json/canvas/1",
+      "type": "Canvas",
+      "label": { "es": ["Obra 1"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/galeria.json/canvas/1/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/galeria.json/canvas/1/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/6.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/6.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/galeria.json/canvas/1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/galeria.json/canvas/2",
+      "type": "Canvas",
+      "label": { "es": ["Obra 2"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/galeria.json/canvas/2/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/galeria.json/canvas/2/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/7.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/7.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/galeria.json/canvas/2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/galeria.json/canvas/3",
+      "type": "Canvas",
+      "label": { "es": ["Obra 3"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/galeria.json/canvas/3/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/galeria.json/canvas/3/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/8.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/8.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/galeria.json/canvas/3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/galeria.json/canvas/4",
+      "type": "Canvas",
+      "label": { "es": ["Obra 4"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/galeria.json/canvas/4/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/galeria.json/canvas/4/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/9.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/9.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/galeria.json/canvas/4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "http://localhost/manifests/galeria.json/canvas/5",
+      "type": "Canvas",
+      "label": { "es": ["Obra 5"] },
+      "width": 1000,
+      "height": 1000,
+      "items": [
+        {
+          "id": "http://localhost/manifests/galeria.json/canvas/5/annopage",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "http://localhost/manifests/galeria.json/canvas/5/anno",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "http://localhost/iiif/3/10.jpg/full/max/0/default.jpg",
+                "type": "Image",
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "id": "http://localhost/iiif/3/10.jpg",
+                    "type": "ImageService3",
+                    "profile": "level2"
+                  }
+                ]
+              },
+              "target": "http://localhost/manifests/galeria.json/canvas/5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

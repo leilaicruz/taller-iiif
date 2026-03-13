@@ -1,0 +1,30 @@
+services:
+  cantaloupe:
+    build:
+      context: .
+      args:
+        CANTALOUPE_VERSION: "5.0.6"
+    container_name: cantaloupe-iiif
+    ports:
+      - "8182:8182"
+    volumes:
+      - ./images:/var/cantaloupe/images
+      - cantaloupe-cache:/var/cantaloupe/cache
+      - ./cantaloupe.properties:/opt/cantaloupe/cantaloupe.properties:ro
+    restart: unless-stopped
+    environment:
+      - JAVA_OPTS=-Xmx2g
+
+  taller:
+    image: nginx:alpine
+    container_name: taller-iiif
+    ports:
+      - "8888:80"
+    volumes:
+      - ./taller:/usr/share/nginx/html:ro
+    restart: unless-stopped
+    depends_on:
+      - cantaloupe
+
+volumes:
+  cantaloupe-cache:
